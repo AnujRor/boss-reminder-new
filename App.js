@@ -191,7 +191,7 @@ export default function App() {
     speakNotificationText(data.time, data.text);
   };
 
-  const handleNotificationResponse = (response) => {
+  const handleNotificationResponse = async (response) => {
     const notification = response.notification;
     const data = notification.request.content.data || {};
     const { actionIdentifier } = response;
@@ -605,7 +605,8 @@ export default function App() {
       </KeyboardAvoidingView>
 
       {editingTaskId && (
-        <View style={styles.editCard}>
+        <>
+          <View style={styles.editCard}>
           <Text style={styles.editTitle}>Task edit karein</Text>
           <TextInput
             style={styles.editInput}
@@ -644,14 +645,15 @@ export default function App() {
             </TouchableOpacity>
           </View>
         </View>
-        {showEditPicker && (
+        {showEditPicker ? (
           <DateTimePicker
             value={editPickerValue}
             mode="time"
             display="spinner"
             onChange={handleEditDateTimePickerChange}
           />
-        )}
+        ) : null}
+        </>
       )}
 
       <TouchableOpacity style={styles.testButton} onPress={testReminder}>
