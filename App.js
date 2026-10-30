@@ -342,13 +342,15 @@ export default function App() {
   };
 
   const handleDateTimePickerChange = (event, selected) => {
-    setShowPicker(false);
+    if (event.type === 'dismissed') { setShowPicker(false); return; }
     if (selected) setPickerValue(selected);
+    if (Platform.OS !== 'ios') setShowPicker(false);
   };
 
   const handleEditDateTimePickerChange = (event, selected) => {
-    setShowEditPicker(false);
+    if (event.type === 'dismissed') { setShowEditPicker(false); return; }
     if (selected) setEditPickerValue(selected);
+    if (Platform.OS !== 'ios') setShowEditPicker(false);
   };
 
   const startEdit = (task) => {
@@ -598,7 +600,7 @@ export default function App() {
           <DateTimePicker
             value={pickerValue}
             mode="time"
-            display="spinner"
+            display="default"
             onChange={handleDateTimePickerChange}
           />
         )}
@@ -649,7 +651,7 @@ export default function App() {
           <DateTimePicker
             value={editPickerValue}
             mode="time"
-            display="spinner"
+            display="default"
             onChange={handleEditDateTimePickerChange}
           />
         ) : null}
