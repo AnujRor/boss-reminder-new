@@ -47,7 +47,8 @@ const CATEGORY_LABELS = {
 export default function App() {
   const [tasks, setTasks] = useState([]);
   const [permissionStatus, setPermissionStatus] = useState(null);
-  const [showPicker, setShowPicker] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState('all');
   const [pickerValue, setPickerValue] = useState(new Date());
   const [taskText, setTaskText] = useState('');
   const [taskPriority, setTaskPriority] = useState('medium');
@@ -438,6 +439,7 @@ export default function App() {
 
   const filteredTasks = tasks
     .filter((t) => activeTab === 'pending' ? !t.done : t.done)
+    .filter((t) => categoryFilter === 'all' || t.category === categoryFilter)
     .filter((t) => t.text.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => parseTaskDateTime(a) - parseTaskDateTime(b));
 
@@ -495,6 +497,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="light" backgroundColor={NAVY} />
+      <TouchableOpacity onPress={() => setIsDark(!isDark)} style={{ alignSelf: 'flex-end', marginRight: 16, marginTop: 8 }}>
+        <Text style={{ color: '#fff' }}>{isDark ? 'Light' : 'Dark'}</Text>
+      </TouchableOpacity>
       <View style={styles.header}>
         <View style={styles.accentLine} />
         <Text style={styles.headerTitle}>Boss Reminder</Text>
@@ -544,6 +549,14 @@ export default function App() {
         <TouchableOpacity style={[styles.tabButton, activeTab === 'completed' && styles.tabActive]} onPress={() => setActiveTab('completed')}>
           <Text style={[styles.tabText, activeTab === 'completed' && styles.tabTextActive]}>Poore hue</Text>
         </TouchableOpacity>
+      </View>
+
+      <View style={{ flexDirection: 'row', gap: 8, paddingHorizontal: 16, marginBottom: 8 }}>
+        {['all','work','personal','other'].map((c) => (
+          <TouchableOpacity key={c} onPress={() => setCategoryFilter(c)} style={{ paddingVertical: 6, paddingHorizontal: 12, borderRadius: 16, backgroundColor: categoryFilter===c ? '#0f3460' : '#e5e7eb' }}>
+            <Text style={{ color: categoryFilter===c ? '#fff' : '#374151', fontSize: 12 }}>{c}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : undefined} style={styles.inputWrapper}>
