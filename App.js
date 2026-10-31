@@ -49,6 +49,7 @@ export default function App() {
   const [permissionStatus, setPermissionStatus] = useState(null);
   const [isDark, setIsDark] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [showPicker, setShowPicker] = useState(false);
   const [pickerValue, setPickerValue] = useState(new Date());
   const [taskText, setTaskText] = useState('');
   const [taskPriority, setTaskPriority] = useState('medium');
